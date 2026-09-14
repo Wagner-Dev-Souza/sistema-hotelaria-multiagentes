@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hóspedes - Sistema de Hotelaria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-hotel me-2"></i>Sistema de Hotelaria
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="quartos.html">
+                            <i class="fas fa-bed me-1"></i>Quartos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reservas.html">
+                            <i class="fas fa-calendar-alt me-1"></i>Reservas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="hospedes.html">
+                            <i class="fas fa-users me-1"></i>Hóspedes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Guests Page -->
+        <div id="hospedes-page" class="page-content">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h1 class="h3 mb-0">Gerenciamento de Hóspedes</h1>
+                    <p class="text-muted">Cadastre e gerencie informações dos hóspedes</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-primary" onclick="showGuestModal()">
+                        <i class="fas fa-plus me-1"></i>Novo Hóspede
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control search-input" id="guest-search" placeholder="Buscar hóspede por nome, email ou documento...">
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select">
+                            <option value="all">Todos os Hóspedes</option>
+                            <option value="current">Hóspedes Atuais</option>
+                            <option value="past">Hóspedes Antigos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guests Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Documento</th>
+                            <th>Data Cadastro</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="guests-table">
+                        <!-- Guests will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guest Modal -->
+    <div class="modal fade" id="guest-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-user me-2"></i>
+                        <span id="guest-modal-title">Novo Hóspede</span>
+                    </h5>
+                    <button type="button" class="btn-close" onclick="closeGuestModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="guest-form">
+                        <div class="mb-3">
+                            <label for="guest-name" class="form-label">Nome Completo</label>
+                            <input type="text" class="form-control" id="guest-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guest-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="guest-email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guest-phone" class="form-label">Telefone</label>
+                            <input type="tel" class="form-control" id="guest-phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guest-document" class="form-label">CPF/CNPJ</label>
+                            <input type="text" class="form-control" id="guest-document" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeGuestModal()">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveGuest()">
+                        <span id="guest-submit-text">Salvar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Initialize guests page when loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof app === 'undefined') {
+                app = new HotelAdminApp();
+            }
+            app.loadGuestsData();
+        });
+
+        function showGuestModal() {
+            const modal = document.getElementById('guest-modal');
+            document.getElementById('guest-modal-title').textContent = 'Novo Hóspede';
+            document.getElementById('guest-submit-text').textContent = 'Salvar';
+            document.getElementById('guest-form').reset();
+            delete modal.dataset.editId;
+            app.showModal(modal);
+        }
+
+        function closeGuestModal() {
+            app.closeModal(document.getElementById('guest-modal'));
+        }
+
+        function saveGuest() {
+            const form = document.getElementById('guest-form');
+            if (form.checkValidity()) {
+                form.dispatchEvent(new Event('submit'));
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function editGuest(guestId) {
+            const guest = app.guests.find(g => g.id === guestId);
+            if (guest) {
+                const modal = document.getElementById('guest-modal');
+                document.getElementById('guest-modal-title').textContent = 'Editar Hóspede';
+                document.getElementById('guest-submit-text').textContent = 'Atualizar';
+                document.getElementById('guest-name').value = guest.name;
+                document.getElementById('guest-email').value = guest.email;
+                document.getElementById('guest-phone').value = guest.phone;
+                document.getElementById('guest-document').value = guest.document;
+                modal.dataset.editId = guestId;
+                app.showModal(modal);
+            }
+        }
+
+        function deleteGuest(guestId) {
+            if (confirm('Tem certeza que deseja excluir este hóspede?')) {
+                app.guests = app.guests.filter(guest => guest.id !== guestId);
+                app.saveData();
+                app.loadGuestsData();
+            }
+        }
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('guest-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const filtered = app.guests.filter(guest => 
+                        guest.name.toLowerCase().includes(searchTerm) ||
+                        guest.email.toLowerCase().includes(searchTerm) ||
+                        guest.document.toLowerCase().includes(searchTerm)
+                    );
+                    app.renderGuestsTable(filtered);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

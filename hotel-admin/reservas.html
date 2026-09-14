@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas - Sistema de Hotelaria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-hotel me-2"></i>Sistema de Hotelaria
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="quartos.html">
+                            <i class="fas fa-bed me-1"></i>Quartos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="reservas.html">
+                            <i class="fas fa-calendar-alt me-1"></i>Reservas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="hospedes.html">
+                            <i class="fas fa-users me-1"></i>Hóspedes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Reservations Page -->
+        <div id="reservas-page" class="page-content">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h1 class="h3 mb-0">Gerenciamento de Reservas</h1>
+                    <p class="text-muted">Visualize e gerencie todas as reservas</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-primary" onclick="showReservationModal()">
+                        <i class="fas fa-plus me-1"></i>Nova Reserva
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="search-container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control search-input" placeholder="Buscar reserva..." data-page="reservas">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select filter-select" id="reservation-filter" data-page="reservas">
+                            <option value="all">Todos os Status</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="checkin">Check-in</option>
+                            <option value="checkout">Check-out</option>
+                            <option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" placeholder="Data inicial">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar me-2"></i>Calendário de Reservas
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="reservations-calendar">
+                                <!-- Calendar will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-list me-2"></i>Reservas
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Hóspede</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reservations-table">
+                                        <!-- Reservations will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Reservations Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Hóspede</th>
+                            <th>Quarto</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservations-table-full">
+                        <!-- Full reservations table will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Modal -->
+    <div class="modal fade" id="reservation-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        <span id="reservation-modal-title">Nova Reserva</span>
+                    </h5>
+                    <button type="button" class="btn-close" onclick="closeReservationModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reservation-form">
+                        <div class="mb-3">
+                            <label for="reservation-guest-name" class="form-label">Nome do Hóspede</label>
+                            <input type="text" class="form-control" id="reservation-guest-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reservation-room-number" class="form-label">Quarto</label>
+                            <select class="form-select" id="reservation-room-number" required>
+                                <option value="">Selecione o quarto</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="reservation-check-in" class="form-label">Check-in</label>
+                                <input type="date" class="form-control" id="reservation-check-in" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="reservation-check-out" class="form-label">Check-out</label>
+                                <input type="date" class="form-control" id="reservation-check-out" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reservation-total" class="form-label">Total (R$)</label>
+                            <input type="number" class="form-control" id="reservation-total" step="0.01" min="0" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeReservationModal()">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveReservation()">
+                        <span id="reservation-submit-text">Salvar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Details Modal -->
+    <div class="modal fade" id="reservation-details-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-info-circle me-2"></i>Detalhes da Reserva
+                    </h5>
+                    <button type="button" class="btn-close" onclick="closeReservationDetailsModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Hóspede:</strong>
+                            <p id="detail-guest-name"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Quarto:</strong>
+                            <p id="detail-room-number"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Check-in:</strong>
+                            <p id="detail-check-in"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Check-out:</strong>
+                            <p id="detail-check-out"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Total:</strong>
+                            <p id="detail-total"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Status:</strong>
+                            <p id="detail-status"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeReservationDetailsModal()">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Initialize reservations page when loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof app === 'undefined') {
+                app = new HotelAdminApp();
+            }
+            app.loadReservationsData();
+            populateRoomSelect();
+        });
+
+        function populateRoomSelect() {
+            const roomSelect = document.getElementById('reservation-room-number');
+            if (roomSelect) {
+                roomSelect.innerHTML = '<option value="">Selecione o quarto</option>';
+                app.rooms.forEach(room => {
+                    if (room.status === 'disponivel') {
+                        roomSelect.innerHTML += `<option value="${room.number}">${room.number} - ${room.type}</option>`;
+                    }
+                });
+            }
+        }
+
+        function showReservationModal() {
+            const modal = document.getElementById('reservation-modal');
+            document.getElementById('reservation-modal-title').textContent = 'Nova Reserva';
+            document.getElementById('reservation-submit-text').textContent = 'Salvar';
+            document.getElementById('reservation-form').reset();
+            populateRoomSelect();
+            delete modal.dataset.editId;
+            app.showModal(modal);
+        }
+
+        function closeReservationModal() {
+            app.closeModal(document.getElementById('reservation-modal'));
+        }
+
+        function saveReservation() {
+            const form = document.getElementById('reservation-form');
+            if (form.checkValidity()) {
+                form.dispatchEvent(new Event('submit'));
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function showReservationDetails(reservationId) {
+            const reservation = app.reservations.find(r => r.id === reservationId);
+            if (reservation) {
+                document.getElementById('detail-guest-name').textContent = reservation.guestName;
+                document.getElementById('detail-room-number').textContent = reservation.roomNumber;
+                document.getElementById('detail-check-in').textContent = app.formatDate(reservation.checkIn);
+                document.getElementById('detail-check-out').textContent = app.formatDate(reservation.checkOut);
+                document.getElementById('detail-total').textContent = `R$ ${reservation.total.toLocaleString()}`;
+                document.getElementById('detail-status').textContent = app.getReservationStatusText(reservation.status);
+                
+                app.showModal(document.getElementById('reservation-details-modal'));
+            }
+        }
+
+        function closeReservationDetailsModal() {
+            app.closeModal(document.getElementById('reservation-details-modal'));
+        }
+
+        function cancelReservation(reservationId) {
+            if (confirm('Tem certeza que deseja cancelar esta reserva?')) {
+                const reservation = app.reservations.find(r => r.id === reservationId);
+                if (reservation) {
+                    reservation.status = 'cancelada';
+                    app.saveData();
+                    app.loadReservationsData();
+                }
+            }
+        }
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.querySelector('.search-input[data-page="reservas"]');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const filtered = app.reservations.filter(res => 
+                        res.guestName.toLowerCase().includes(searchTerm) ||
+                        res.roomNumber.toLowerCase().includes(searchTerm)
+                    );
+                    app.renderReservationsTable(filtered);
+                });
+            }
+
+            // Filter functionality
+            const filterSelect = document.getElementById('reservation-filter');
+            if (filterSelect) {
+                filterSelect.addEventListener('change', (e) => {
+                    const filterValue = e.target.value;
+                    if (filterValue === 'all') {
+                        app.renderReservationsTable();
+                    } else {
+                        const filtered = app.reservations.filter(res => res.status === filterValue);
+                        app.renderReservationsTable(filtered);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Hotelaria - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hotel me-2"></i>Sistema de Hotelaria
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-page="dashboard" href="#">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="quartos" href="#">
+                            <i class="fas fa-bed me-1"></i>Quartos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="reservas" href="#">
+                            <i class="fas fa-calendar-alt me-1"></i>Reservas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="hospedes" href="#">
+                            <i class="fas fa-users me-1"></i>Hóspedes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="h3 mb-0">Dashboard Principal</h1>
+                    <p class="text-muted">Visão geral do hotel em tempo real</p>
+                </div>
+            </div>
+
+            <!-- Metrics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-percentage me-2"></i>Taxa de Ocupação
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="metric-value" id="occupancy-value">0%</div>
+                            <div class="metric-label">Ocupação</div>
+                            <div class="metric-change positive" id="occupancy-trend">+0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-money-bill-wave me-2"></i>Receita Diária
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="metric-value" id="revenue-value">R$ 0</div>
+                            <div class="metric-label">Receita</div>
+                            <div class="metric-change positive" id="revenue-trend">+0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar-check me-2"></i>Reservas Ativas
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="metric-value" id="reservations-value">0</div>
+                            <div class="metric-label">Reservas</div>
+                            <div class="metric-change positive" id="reservations-trend">+0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-users me-2"></i>Hóspedes Atuais
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="metric-value" id="guests-value">0</div>
+                            <div class="metric-label">Hóspedes</div>
+                            <div class="metric-change positive" id="guests-trend">+0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-bar me-2"></i>Taxa de Ocupação
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="occupancy-chart" class="chart-container">
+                                <!-- Chart will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-line me-2"></i>Receita por Tipo de Quarto
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="revenue-chart" class="chart-container">
+                                <!-- Chart will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-clock me-2"></i>Atividades Recentes
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Hóspede</th>
+                                            <th>Quarto</th>
+                                            <th>Tipo</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-activities">
+                                        <!-- Activities will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rooms Page -->
+        <div id="quartos-page" class="page-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h1 class="h3 mb-0">Gerenciamento de Quartos</h1>
+                    <p class="text-muted">Gerencie todos os quartos do hotel</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-primary" onclick="app.showModal(document.getElementById('room-modal'))">
+                        <i class="fas fa-plus me-1"></i>Novo Quarto
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="search-container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control search-input" placeholder="Buscar quarto..." data-page="quartos">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select filter-select" id="room-filter" data-page="quartos">
+                            <option value="all">Todos os Status</option>
+                            <option value="disponivel">Disponível</option>
+                            <option value="ocupado">Ocupado</option>
+                            <option value="manutencao">Manutenção</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select filter-select" data-page="quartos">
+                            <option value="all">Todos os Tipos</option>
+                            <option value="Simples">Simples</option>
+                            <option value="Duplo">Duplo</option>
+                            <option value="Suíte">Suíte</option>
+                            <option value="Presidencial">Presidencial</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rooms Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Tipo</th>
+                            <th>Capacidade</th>
+                            <th>Preço Diária</th>
+                            <th>Status</th>
+                            <th class="no-print">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rooms-table">
+                        <!-- Rooms will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Reservations Page -->
+        <div id="reservas-page" class="page-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h1 class="h3 mb-0">Gerenciamento de Reservas</h1>
+                    <p class="text-muted">Visualize e gerencie todas as reservas</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-primary" onclick="app.showModal(document.getElementById('reservation-modal'))">
+                        <i class="fas fa-plus me-1"></i>Nova Reserva
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="search-container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control search-input" placeholder="Buscar reserva..." data-page="reservas">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select filter-select" id="reservation-filter" data-page="reservas">
+                            <option value="all">Todos os Status</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="checkin">Check-in</option>
+                            <option value="checkout">Check-out</option>
+                            <option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" placeholder="Data inicial">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar me-2"></i>Calendário de Reservas
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="reservations-calendar">
+                                <!-- Calendar will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-list me-2"></i>Reservas
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Hóspede</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reservations-table">
+                                        <!-- Reservations will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Reservations Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Hóspede</th>
+                            <th>Quarto</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th class="no-print">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservations-table-full">
+                        <!-- Full reservations table will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Guests Page -->
+        <div id="hospedes-page" class="page-content" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h1 class="h3 mb-0">Gerenciamento de Hóspedes</h1>
+                    <p class="text-muted">Cadastre e gerencie informações dos hóspedes</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-primary" onclick="app.showModal(document.getElementById('guest-modal'))">
+                        <i class="fas fa-plus me-1"></i>Novo Hóspede
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control search-input" id="guest-search" placeholder="Buscar hóspede por nome, email ou documento...">
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select">
+                            <option value="all">Todos os Hóspedes</option>
+                            <option value="current">Hóspedes Atuais</option>
+                            <option value="past">Hóspedes Antigos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guests Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Documento</th>
+                            <th>Data Cadastro</th>
+                            <th class="no-print">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="guests-table">
+                        <!-- Guests will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Modal -->
+    <div class="modal fade" id="room-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-bed me-2"></i>
+                        <span id="room-modal-title">Novo Quarto</span>
+                    </h5>
+                    <button type="button" class="btn-close" onclick="app.closeModal(document.getElementById('room-modal'))"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="room-form">
+                        <div class="mb-3">
+                            <label for="room-number" class="form-label">Número do Quarto</label>
+                            <input type="text" class="form-control" id="room-number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="room-type" class="form-label">Tipo</label>
+                            <select class="form-select" id="room-type" required>
+                                <option value="">Selecione o tipo</option>
+                                <option value="Simples">Simples</option>
+                                <option value="Duplo">Duplo</option>
+                                <option value="Suíte">Suíte</option>
+                                <option value="Presidencial">Presidencial</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="room-capacity" class="form-label">Capacidade</label>
+                            <input type="number" class="form-control" id="room-capacity" min="1" max="10" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="room-price" class="form-label">Preço Diária (R$)</label>
+                            <input type="number" class="form-control" id="room-price" step="0.01" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="room-status" class="form-label">Status</label>
+                            <select class="form-select" id="room-status" required>
+                                <option value="disponivel">Disponível</option>
+                                <option value="ocupado">Ocupado</option>
+                                <option value="manutencao">Manutenção</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="app.closeModal(document.getElementById('room-modal'))">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('room-form').dispatchEvent(new Event('submit'))">
+                        <span id="room-submit-text">Salvar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Modal -->
+    <div class="modal fade" id="reservation-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        <span id="reservation-modal-title">Nova Reserva</span>
+                    </h5>
+                    <button type="button" class="btn-close" onclick="app.closeModal(document.getElementById('reservation-modal'))"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reservation-form">
+                        <div class="mb-3">
+                            <label for="reservation-guest-name" class="form-label">Nome do Hóspede</label>
+                            <input type="text" class="form-control" id="reservation-guest-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reservation-room-number" class="form-label">Quarto</label>
+                            <select class="form-select" id="reservation-room-number" required>
+                                <option value="">Selecione o quarto</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="reservation-check-in" class="form-label">Check-in</label>
+                                <input type="date" class="form-control" id="reservation-check-in" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="reservation-check-out" class="form-label">Check-out</label>
+                                <input type="date" class="form-control" id="reservation-check-out" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reservation-total" class="form-label">Total (R$)</label>
+                            <input type="number" class="form-control" id="reservation-total" step="0.01" min="0" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="app.closeModal(document.getElementById('reservation-modal'))">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('reservation-form').dispatchEvent(new Event('submit'))">
+                        <span id="reservation-submit-text">Salvar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Details Modal -->
+    <div class="modal fade" id="reservation-details-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-info-circle me-2"></i>Detalhes da Reserva
+                    </h5>
+                    <button type="button" class="btn-close" onclick="app.closeModal(document.getElementById('reservation-details-modal'))"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Hóspede:</strong>
+                            <p id="detail-guest-name"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Quarto:</strong>
+                            <p id="detail-room-number"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Check-in:</strong>
+                            <p id="detail-check-in"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Check-out:</strong>
+                            <p id="detail-check-out"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Total:</strong>
+                            <p id="detail-total"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Status:</strong>
+                            <p id="detail-status"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="app.closeModal(document.getElementById('reservation-details-modal'))">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guest Modal -->
+    <div class="modal fade" id="guest-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-user me-2"></i>
+                        <span id="guest-modal-title">Novo Hóspede</span>
+                    </h5>
+                    <button type="button" class="btn-close" onclick="app.closeModal(document.getElementById('guest-modal'))"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="guest-form">
+                        <div class="mb-3">
+                            <label for="guest-name" class="form-label">Nome Completo</label>
+                            <input type="text" class="form-control" id="guest-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guest-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="guest-email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guest-phone" class="form-label">Telefone</label>
+                            <input type="tel" class="form-control" id="guest-phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guest-document" class="form-label">CPF/CNPJ</label>
+                            <input type="text" class="form-control" id="guest-document" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="app.closeModal(document.getElementById('guest-modal'))">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('guest-form').dispatchEvent(new Event('submit'))">
+                        <span id="guest-submit-text">Salvar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

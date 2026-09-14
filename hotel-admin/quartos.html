@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quartos - Sistema de Hotelaria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-hotel me-2"></i>Sistema de Hotelaria
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="quartos.html">
+                            <i class="fas fa-bed me-1"></i>Quartos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reservas.html">
+                            <i class="fas fa-calendar-alt me-1"></i>Reservas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="hospedes.html">
+                            <i class="fas fa-users me-1"></i>Hóspedes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Rooms Page -->
+        <div id="quartos-page" class="page-content">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h1 class="h3 mb-0">Gerenciamento de Quartos</h1>
+                    <p class="text-muted">Gerencie todos os quartos do hotel</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-primary" onclick="showRoomModal()">
+                        <i class="fas fa-plus me-1"></i>Novo Quarto
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="search-container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control search-input" placeholder="Buscar quarto..." data-page="quartos">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select filter-select" id="room-filter" data-page="quartos">
+                            <option value="all">Todos os Status</option>
+                            <option value="disponivel">Disponível</option>
+                            <option value="ocupado">Ocupado</option>
+                            <option value="manutencao">Manutenção</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select filter-select" data-page="quartos">
+                            <option value="all">Todos os Tipos</option>
+                            <option value="Simples">Simples</option>
+                            <option value="Duplo">Duplo</option>
+                            <option value="Suíte">Suíte</option>
+                            <option value="Presidencial">Presidencial</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rooms Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Tipo</th>
+                            <th>Capacidade</th>
+                            <th>Preço Diária</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rooms-table">
+                        <!-- Rooms will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Modal -->
+    <div class="modal fade" id="room-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-bed me-2"></i>
+                        <span id="room-modal-title">Novo Quarto</span>
+                    </h5>
+                    <button type="button" class="btn-close" onclick="closeRoomModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="room-form">
+                        <div class="mb-3">
+                            <label for="room-number" class="form-label">Número do Quarto</label>
+                            <input type="text" class="form-control" id="room-number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="room-type" class="form-label">Tipo</label>
+                            <select class="form-select" id="room-type" required>
+                                <option value="">Selecione o tipo</option>
+                                <option value="Simples">Simples</option>
+                                <option value="Duplo">Duplo</option>
+                                <option value="Suíte">Suíte</option>
+                                <option value="Presidencial">Presidencial</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="room-capacity" class="form-label">Capacidade</label>
+                            <input type="number" class="form-control" id="room-capacity" min="1" max="10" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="room-price" class="form-label">Preço Diária (R$)</label>
+                            <input type="number" class="form-control" id="room-price" step="0.01" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="room-status" class="form-label">Status</label>
+                            <select class="form-select" id="room-status" required>
+                                <option value="disponivel">Disponível</option>
+                                <option value="ocupado">Ocupado</option>
+                                <option value="manutencao">Manutenção</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeRoomModal()">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveRoom()">
+                        <span id="room-submit-text">Salvar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Initialize rooms page when loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof app === 'undefined') {
+                app = new HotelAdminApp();
+            }
+            app.loadRoomsData();
+        });
+
+        function showRoomModal() {
+            const modal = document.getElementById('room-modal');
+            document.getElementById('room-modal-title').textContent = 'Novo Quarto';
+            document.getElementById('room-submit-text').textContent = 'Salvar';
+            document.getElementById('room-form').reset();
+            delete modal.dataset.editId;
+            app.showModal(modal);
+        }
+
+        function closeRoomModal() {
+            app.closeModal(document.getElementById('room-modal'));
+        }
+
+        function saveRoom() {
+            const form = document.getElementById('room-form');
+            if (form.checkValidity()) {
+                form.dispatchEvent(new Event('submit'));
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.querySelector('.search-input[data-page="quartos"]');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const filtered = app.rooms.filter(room => 
+                        room.number.toLowerCase().includes(searchTerm) ||
+                        room.type.toLowerCase().includes(searchTerm)
+                    );
+                    app.renderRoomsTable(filtered);
+                });
+            }
+
+            // Filter functionality
+            const filterSelect = document.getElementById('room-filter');
+            if (filterSelect) {
+                filterSelect.addEventListener('change', (e) => {
+                    const filterValue = e.target.value;
+                    if (filterValue === 'all') {
+                        app.renderRoomsTable();
+                    } else {
+                        const filtered = app.rooms.filter(room => room.status === filterValue);
+                        app.renderRoomsTable(filtered);
+                    }
+                });
+            }
+
+            // Type filter
+            const typeFilter = document.querySelector('.filter-select[data-page="quartos"]');
+            if (typeFilter) {
+                typeFilter.addEventListener('change', (e) => {
+                    const filterValue = e.target.value;
+                    if (filterValue === 'all') {
+                        app.renderRoomsTable();
+                    } else {
+                        const filtered = app.rooms.filter(room => room.type === filterValue);
+                        app.renderRoomsTable(filtered);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

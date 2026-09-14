@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Hotelaria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-hotel me-2"></i>Sistema de Hotelaria
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="quartos.html">
+                            <i class="fas fa-bed me-1"></i>Quartos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reservas.html">
+                            <i class="fas fa-calendar-alt me-1"></i>Reservas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="hospedes.html">
+                            <i class="fas fa-users me-1"></i>Hóspedes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="h3 mb-0">Dashboard Principal</h1>
+                    <p class="text-muted">Visão geral do hotel em tempo real</p>
+                </div>
+            </div>
+
+            <!-- Metrics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-percentage me-2"></i>Taxa de Ocupação
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="metric-value" id="occupancy-value">0%</div>
+                            <div class="metric-label">Ocupação</div>
+                            <div class="metric-change positive" id="occupancy-trend">+0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-money-bill-wave me-2"></i>Receita Diária
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="metric-value" id="revenue-value">R$ 0</div>
+                            <div class="metric-label">Receita</div>
+                            <div class="metric-change positive" id="revenue-trend">+0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar-check me-2"></i>Reservas Ativas
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="metric-value" id="reservations-value">0</div>
+                            <div class="metric-label">Reservas</div>
+                            <div class="metric-change positive" id="reservations-trend">+0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-users me-2"></i>Hóspedes Atuais
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="metric-value" id="guests-value">0</div>
+                            <div class="metric-label">Hóspedes</div>
+                            <div class="metric-change positive" id="guests-trend">+0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-bar me-2"></i>Taxa de Ocupação
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="occupancy-chart" class="chart-container">
+                                <!-- Chart will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-line me-2"></i>Receita por Tipo de Quarto
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="revenue-chart" class="chart-container">
+                                <!-- Chart will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-clock me-2"></i>Atividades Recentes
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Hóspede</th>
+                                            <th>Quarto</th>
+                                            <th>Tipo</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-activities">
+                                        <!-- Activities will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof app === 'undefined') {
+                app = new HotelAdminApp();
+            }
+            app.loadDashboardData();
+        });
+    </script>
+</body>
+</html>
