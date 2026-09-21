@@ -2,6 +2,12 @@
 
 Um sistema completo de gerenciamento de hotelaria desenvolvido com **orquestração multi-agente** utilizando o Hermes Agent.
 
+[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+![node](https://img.shields.io/badge/node-%E2%89%A520-informational)
+![express](https://img.shields.io/badge/backend-Express%20%2B%20SQLite-lightgrey)
+![front](https://img.shields.io/badge/front-Bootstrap%205-7952B3)
+![orquestracao](https://img.shields.io/badge/constru%C3%A7%C3%A3o-orquestra%C3%A7%C3%A3o%20multi--agente-orange)
+
 ## 🚀 Sobre o Projeto
 
 Este projeto demonstra a capacidade de orquestração de múltiplos agentes especializados para construir sistemas complexos em paralelo. O sistema foi desenvolvido em **15 minutos** usando 4 agentes especializados sob coordenação central.
@@ -178,7 +184,7 @@ DELETE /api/users/:id              # Deletar usuário (protegido)
 
 ## 📝 Licença
 
-ISC License - Ver arquivo LICENSE para detalhes.
+MIT - Ver arquivo LICENSE para detalhes.
 
 ---
 
